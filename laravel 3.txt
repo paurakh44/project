@@ -1,0 +1,173 @@
+  //file uploading using laravel
+
+  //contactcontroller.php
+
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\controller;
+use Illuminate\Http\Request;
+
+class contactcontroller extends controller
+{
+    public function index()
+    {
+        return view('froentend.contact');
+    }
+
+  
+   public function upload(Request $request)
+   {
+    $fileName = time()."-ws".$request->file('image')->getclientoriginalExtension();
+    echo $fileName;
+    die;
+    echo $request->file('image')->store('uploads');
+   
+   }
+}
+
+  //web.php
+
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\contactcontroller;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/upload',function(){
+    return view('upload');
+});
+
+Route::post('/upload',[contactcontroller::class,'upload']);
+
+  //upload.blade.php
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body>
+    <form method="post" enctype="multipart/form-data" action="{{url('/upload')}}">
+        @csrf
+        <div class="container">
+            <div class="form-group">
+                <label for="">file</label>
+                <input type="file" name="image" id="" class="form-control" placeholder="" aria-describedby="helpTd">
+        </div>
+        <button class="btn btn-primary">upload</button>
+</div>
+</form>
+      
+   
+  </body>
+</html>
+
+  //creating customer helper in laravel
+
+  //helper.php
+<?php
+
+
+//Impoetant functions
+echo "Hello";
+
+// Accessor and mutator in laravel
+
+
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Customer extends Model
+{
+    use HasFactory;
+    protected $table = "customers";
+    protected $primarykey = "customer-id";
+
+    public function setNameAtrribute($value)
+    {
+        $this->attributes['name']= ucwords($value);
+    }
+    public function getdobattribute($value)
+    {
+        return date("d-m-y",strtotime($value));
+    }
+
+}
+
+ // handling session in laravel
+
+  1. get all session
+  2. set session
+  3. destroy session
+
+   <?php
+use App\Http\Controllers\Customercontroller;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RegistrationController;
+use App\Models\Customers;
+use Illuminate\Http\Request;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/register',[Registrationcontroller::class,'index']);
+Route::post('/register',[Registrationcontroller::class,'register']);
+Route::get ('/customer/create',[CustomerController::class,'create']);
+Route::get('/customer/delete/(id)',[customercontroller::class,'delete']);
+Route::get ('/customer/view',[CustomerController::class,'view']);
+Route::post ('/customer',[CustomerController::class,'store']);
+
+
+Route::get('get-all-session',function(){
+    $session=session()->all();
+    p($session);
+});
+
+Route::get('set-session', function (Request $request){
+    $request->session()->put('user_name','WsCube Tech');
+    $request->session()->put('user_id','123');
+    $request->session()->flash('status','success');
+    return redirect('get-all-session');
+});
+
+Route::get('destroy-session',function(){
+    session()->forget(['user_name','user_id']);
+    //session()->forget('user_id');
+    return redirect('get-all-session');
+});
+
+

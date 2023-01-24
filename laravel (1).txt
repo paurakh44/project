@@ -1,0 +1,236 @@
+    //controllers
+
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\democontroller;
+use App\Http\Controllers\Photocontroller;
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+Route::get('/', [democontroller::class, 'index']);
+Route::get('/about', 'App\Http\Controllers\democontroller@about');
+
+Route::resource('photo', Photocontroller::class);
+
+  //controller.php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
+
+class Controller extends BaseController
+{
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+}
+
+
+//democontroller
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class democontroller extends Controller
+{
+    public function index()
+    {
+        return view('home');
+    }
+
+    public function about()
+    {
+        return view ('about');
+    }
+
+    
+}
+//photocontroller
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class PhotoController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        echo "index";
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+}
+    
+          //forms
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  </head>
+  <body>
+    <form action="{{url('/')}}/register" method="post">
+        @csrf 
+
+    <div class="container">
+        <h1 class="text-center">Registration</h1>
+        <div class="form-group">
+            <label for="">name</label>
+            <input type="text" name="name" id="" class="form-control" placeholder="" aira-describedby="helpid"/>
+    </div>
+    <div class="form-group">
+            <label for="">email</label>
+            <input type="email" name="email" id="" class="form-control" placeholder="" aira-describedby="helpid"/>
+    </div>
+    <div class="form-group">
+            <label for="">password</label>
+            <input type="password" name="password" id="" class="form-control" placeholder="" aira-describedby="helpid"/>
+    </div>
+    <button class="btn btn-primary">
+        Submit
+</button>
+  </body>
+</html>
+     //input.blade.php
+<div class="container">
+        <h1 class="text-center">Registration</h1>
+        <div class="form-group">
+            <label for="">name</label>
+            <input type="text" name="name" id="" class="form-control" placeholder="" aira-describedby="helpid"/>
+    </div>
+
+Route::post('/register', [RegistrationController::class, 'register']);
+
+      //create table using migration in laravel
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('customers', function (Blueprint $table) {
+            $table->id('customer_id');
+            $table->string('name',60);
+            $table->string('email',100);
+            $table->enum('gender',["m","f","o"])->nullable();
+            $table->text('address');
+            $table->date('dob');
+            $table->string('password');
+            $table->boolean('status')->default(1);
+            $table->integers('points')->default(0);
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('customers');
+    }
+};
+
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=wscube
+DB_USERNAME=root
+DB_PASSWORD=

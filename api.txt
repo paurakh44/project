@@ -1,0 +1,12 @@
+  upload file in laravel
+
+  make view
+  make html form
+  make controller
+  code for upload file
+
+   upload file with api
+   make controller & route
+   setup postman
+    write code for upload file
+    test api and uploaded file
